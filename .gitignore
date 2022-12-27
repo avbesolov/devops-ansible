@@ -1,6 +1,3 @@
-# Ignore files called 'distribReactApp.zip'
-distribReactApp.zip
-
 # Ignoring directories
 # Both the directory itself and its contents will be ignored.
-distribReactApp/
+files/
