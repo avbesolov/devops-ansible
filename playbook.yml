@@ -1,0 +1,103 @@
+---
+- name: Training playbook
+  hosts: all
+  become: true
+  gather_facts: false
+
+  vars:
+    distrib_name: distribReactApp
+
+  tasks:
+  # Проверить, что пользователя petya не существует и удалить его, если существует (модуль user).
+  - name: Ensure user petya is not exists
+    user:
+      name: petya
+      state: absent
+      remove: yes
+
+  # Установить nginx (модуль apt).      
+  - name: Install the latest version of nginx
+    apt:
+      name: nginx
+      state: latest
+    
+  # Создать группу www и пользователя www, добавить пользователя в группу (модуль group, user).  
+  - name: Ensure group www exists
+    group:
+      name: www
+      state: present
+  
+  - name: Add the user www with a primary group of www
+    user:
+      name: www
+      group: www
+
+  # Скопировать скачанный дистрибутив средствами Ansible на целевой хост (модуль copy).
+  - name: Copy file
+    copy:
+      src: files/{{ distrib_name }}.zip
+      dest: /tmp/{{ distrib_name }}.zip
+      # owner: foo
+      # group: foo
+      # mode: '0644'
+  
+  # Создать директории (если их нет) /var/www и /var/www_backup, назначить владельцем пользователя www и группу www (модуль file).
+  - name: Create a directory '/var/www' if it does not exist & recursively change ownership of a directory
+    file:
+      path: /var/www
+      state: directory
+      # mode: '0755'
+      recurse: yes
+      owner: www
+      group: www
+
+  - name: Create a directory '/var/www_backup' if it does not exist & recursively change ownership of a directory
+    file:
+      path: /var/www_backup
+      state: directory
+      # mode: '0755'
+      recurse: yes
+      owner: www
+      group: www
+
+  # Создать архив с содержимым папки /var/www и скопировать его в /var/www_backup (модуль archive).
+  - name: Compress directory '/var/www' into '/var/www_backup/www.tgz'
+    archive:
+      path: /var/www
+      dest: /var/www_backup/www.tgz
+
+  # Установить zip/unzip (модуль apt).      
+  - name: Install the latest version of zip/unzip
+    apt:
+      name: 
+        - zip
+        - unzip
+      state: latest
+
+  # Удаляю стандартный файл index.nginx-debian.html в var/www/html
+  - name: Remove file (delete file)
+    file:
+      path: /var/www/html/index.nginx-debian.html
+      state: absent
+
+  # Распаковать дистрибутив в директорию /var/www/html (модуль unarchive).
+  - name: Extract {{ distrib_name }}.zip into /var/www/html
+    unarchive:
+      src: /tmp/{{ distrib_name }}.zip
+      dest: /var/www/html
+      remote_src: yes
+
+  # Перезапустить nginx (модуль service).
+  # - name: Reload service nginx
+  #   systemd:
+  #     name: nginx
+  #     state: reloaded
+
+  # Проверить работоспособность приложения, убедившись, что http://localhost возвращает код 200 
+  # и в title страницы строка "React App" (модуль uri).
+  - name: Check that a page returns a status 200 and fail if the word 'React App' is not in the page titles
+    uri:
+      url: http://localhost
+      return_content: yes
+    register: this
+    failed_when: "'React App' not in this.content"
