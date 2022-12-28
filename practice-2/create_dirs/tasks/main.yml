@@ -1,0 +1,15 @@
+---
+# Создать директории (если их нет) /var/www и /var/www_backup, назначить владельцем пользователя www и группу www (модуль file).
+  - name: Create a directories '/var/www', '/var/www_backup' if it does not exist & recursively change ownership of a directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      # mode: '0755'
+      recurse: yes
+      owner: www
+      group: www
+    with_items: 
+      - "/var/www"
+      - "/var/www_backup"
+    # tags: 
+    #   - create_dirs

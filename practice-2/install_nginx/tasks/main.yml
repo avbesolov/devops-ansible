@@ -1,0 +1,6 @@
+---
+# Установить nginx (модуль apt).      
+  - name: Install the latest version of nginx
+    apt:
+      name: nginx
+      state: latest

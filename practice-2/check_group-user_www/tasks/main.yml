@@ -1,0 +1,11 @@
+---
+  # Создать группу www и пользователя www, добавить пользователя в группу (модуль group, user).  
+  - name: Ensure group www exists
+    group:
+      name: www
+      state: present
+  
+  - name: Add the user www with a primary group of www
+    user:
+      name: www
+      group: www

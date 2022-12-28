@@ -1,0 +1,9 @@
+---
+  # Скопировать скачанный дистрибутив средствами Ansible на целевой хост (модуль copy).
+  - name: Copy file
+    copy:
+      src: "{{ distrib_name }}.zip"
+      dest: "/tmp/{{ distrib_name }}.zip"
+      # owner: foo
+      # group: foo
+      # mode: '0644'

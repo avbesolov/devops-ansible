@@ -1,0 +1,9 @@
+---
+# Проверить, что пользователя petya не существует и удалить его, если существует (модуль user).
+  - name: Ensure user petya is not exists
+    user:
+      name: petya
+      state: absent
+      remove: yes
+    # tags: 
+    #   - check_user

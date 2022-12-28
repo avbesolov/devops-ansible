@@ -1,0 +1,31 @@
+---
+- name: Training playbook
+  hosts: all
+  become: true
+  # become_user: root
+  gather_facts: false
+
+  vars_files:
+        - common_vars/vars.yml
+
+  roles:
+    - check_user
+    - install_nginx
+    - check_group-user_www
+    - copy_distrib
+    - create_dirs
+    - copy_distrib
+    - unarchive_distrib
+    - check_page
+
+  # tasks:
+  # # Удаление директорий /var/www и /var/www_backup (модуль file).
+  # - name: Delete directories '/var/www', '/var/www_backup'
+  #   file:
+  #     path: "{{ item }}"
+  #     state: absent
+  #   with_items: 
+  #     - "/var/www"
+  #     - "/var/www_backup"
+  #   tags: 
+  #     - delete_dirs

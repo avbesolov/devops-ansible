@@ -1,0 +1,6 @@
+---
+  # Создать архив с содержимым папки /var/www и скопировать его в /var/www_backup (модуль archive).
+  - name: Compress directory '/var/www' into '/var/www_backup/www.tgz'
+    archive:
+      path: /var/www
+      dest: /var/www_backup/www.tgz
