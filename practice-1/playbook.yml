@@ -14,6 +14,8 @@
       name: petya
       state: absent
       remove: yes
+    tags: 
+      - check_user
 
   # Установить nginx (модуль apt).      
   - name: Install the latest version of nginx
