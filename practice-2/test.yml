@@ -1,0 +1,17 @@
+---
+- name: Test playbook
+  hosts: localhost
+  gather_facts: false
+
+  # Спрашиваю пароль перед запуском основых тасок и записываю его в переменную
+  vars_prompt:
+      - name: "mypass"
+        prompt: "Enter password:"
+        private: yes
+        encrypt: "sha512_crypt"
+        # confirm: yes
+        salt_size: 12
+
+  tasks:
+  - name: task
+    debug: "msg={{ mypass }}"
