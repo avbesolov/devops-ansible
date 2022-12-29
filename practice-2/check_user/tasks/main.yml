@@ -5,5 +5,6 @@
       name: petya
       state: absent
       remove: yes
-    # tags: 
-    #   - check_user
+    
+    tags: 
+      - check_user

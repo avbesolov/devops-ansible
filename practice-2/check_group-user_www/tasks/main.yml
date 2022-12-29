@@ -1,11 +1,15 @@
 ---
   # Создать группу www и пользователя www, добавить пользователя в группу (модуль group, user).  
-  - name: Ensure group www exists
-    group:
-      name: www
-      state: present
+  - block:
+      - group:
+          name: www
+          state: present
+      - user:
+          name: www
+          group: www
+
+    tags: check_group-user_www
   
-  - name: Add the user www with a primary group of www
-    user:
-      name: www
-      group: www
+  # - name: Ensure group www exists  
+  # - name: Add the user www with a primary group of www
+    

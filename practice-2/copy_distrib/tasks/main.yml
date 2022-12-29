@@ -7,3 +7,5 @@
       # owner: foo
       # group: foo
       # mode: '0644'
+
+    tags: copy_distrib

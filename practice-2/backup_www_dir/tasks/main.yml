@@ -4,3 +4,5 @@
     archive:
       path: /var/www
       dest: /var/www_backup/www.tgz
+
+    tags: backup_www_dir

@@ -1,20 +1,23 @@
 ---
-# Установить unzip для последующей разархивации дистрибутива (модуль apt).      
-  - name: Install the latest version of unzip
-    apt:
-      name: 
-        - unzip
-      state: latest
-
-  # Удаляю стандартный файл index.nginx-debian.html в var/www/html, если он существует
-  - name: Remove file (delete file)
-    file:
-      path: /var/www/html/index.nginx-debian.html
-      state: absent
-
-  # Распаковать дистрибутив в директорию /var/www/html (модуль unarchive).
-  - name: Extract {{ distrib_name }}.zip into /var/www
-    unarchive:
-      src: /tmp/{{ distrib_name }}.zip
-      dest: /var/www
-      remote_src: yes
+# Установить unzip для последующей разархивации дистрибутива (модуль apt). 
+# Удаляю стандартный файл index.nginx-debian.html в var/www/html, если он существует
+# Распаковать дистрибутив в директорию /var/www/html (модуль unarchive).
+  - block:
+      - apt:
+          name: 
+            - unzip
+          state: latest
+      - file:
+          path: /var/www/html/index.nginx-debian.html
+          state: absent
+      - unarchive:
+          src: /tmp/{{ distrib_name }}.zip
+          dest: /var/www
+          remote_src: yes
+    
+    tags: unarchive_distrib
+     
+# - name: Install the latest version of unzip
+# - name: Remove file (delete file)
+# - name: Extract {{ distrib_name }}.zip into /var/www
+    

@@ -4,3 +4,5 @@
     apt:
       name: nginx
       state: latest
+
+    tags: install_nginx

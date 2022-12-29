@@ -11,5 +11,6 @@
     with_items: 
       - "/var/www"
       - "/var/www_backup"
-    # tags: 
-    #   - create_dirs
+    
+    tags: 
+      - create_dirs
